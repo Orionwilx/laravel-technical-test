@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->role === 'external';
     }
+
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class);
+    }
 }

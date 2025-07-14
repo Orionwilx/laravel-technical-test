@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shipment extends Model
 {
     protected $fillable = [
-        'external_user_id',
+        'user_id',
         'truck_plate',
         'product_name',
         'status',
@@ -21,18 +21,18 @@ class Shipment extends Model
         'delivered_at' => 'datetime',
     ];
 
-    public function externalUser()
+    public function user()
     {
-        return $this->belongsTo(ExternalUser::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function scopeActive($query)
+    public function scopeAnnounced($query)
     {
-        return $query->where('status', '!=', 'cancelled');
+        return $query->where('status', 'announced');
     }
 
     public function scopeByUser($query, $userId)
     {
-        return $query->where('external_user_id', $userId);
+        return $query->where('user_id', $userId);
     }
 }
