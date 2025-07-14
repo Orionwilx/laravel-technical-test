@@ -67,4 +67,12 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     })->name('dashboard');
 });
 
+// Ruta temporal para guía de pruebas (SOLO PARA DESARROLLO)
+Route::get('/test-guide', function () {
+    $users = \App\Models\User::all();
+    $shipments = \App\Models\Shipment::with('user')->get();
+
+    return view('test-guide', compact('users', 'shipments'));
+});
+
 require __DIR__ . '/auth.php';

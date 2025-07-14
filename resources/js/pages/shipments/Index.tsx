@@ -1,7 +1,8 @@
 import ShipmentsList from '@/components/shipments/ShipmentsList';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import SimpleLayout from '@/layouts/SimpleLayout';
 import { PageProps, Shipment } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
 
 interface ShipmentsIndexProps extends PageProps {
     shipments: Shipment[];
@@ -12,24 +13,35 @@ export default function ShipmentsIndex({ auth, shipments }: ShipmentsIndexProps)
     const isAdmin = user.role === 'admin';
 
     return (
-        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Envíos</h2>}>
-            <Head title="Envíos" />
+        <SimpleLayout>
+            <Head title="Shipments" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <ShipmentsList
-                                shipments={shipments}
-                                canCreate={true}
-                                canEdit={isAdmin || user.role === 'external'}
-                                canDelete={isAdmin}
-                                showUserInfo={isAdmin}
-                            />
-                        </div>
+            <div className="space-y-6">
+                {/* Header */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-2xl font-bold text-gray-900">Shipments</h1>
+                        <Link
+                            href="/shipments/create"
+                            className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Create Shipment
+                        </Link>
                     </div>
                 </div>
+
+                {/* Shipments List */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <ShipmentsList
+                        shipments={shipments}
+                        canCreate={true}
+                        canEdit={isAdmin || user.role === 'external'}
+                        canDelete={isAdmin}
+                        showUserInfo={isAdmin}
+                    />
+                </div>
             </div>
-        </AuthenticatedLayout>
+        </SimpleLayout>
     );
 }

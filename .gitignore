@@ -22,5 +22,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-/tasks.md
+routes/web.php
+DEVELOPER_GUIDE.md
+README-UPDATED.md
 tasks.md

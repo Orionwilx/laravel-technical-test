@@ -40,21 +40,7 @@ export default function DashboardStatsComponent({ stats, userRole }: DashboardSt
     };
 
     return (
-        <div className="space-y-6">
-            {/* Welcome Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">Dashboard</h1>
-                    <p className="text-gray-600">{userRole === 'admin' ? 'Resumen general del sistema' : 'Resumen de sus envíos'}</p>
-                </div>
-                <Button asChild>
-                    <Link href="/shipments/create">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Nuevo Envío
-                    </Link>
-                </Button>
-            </div>
-
+        <div className="space-y-8">
             {/* Statistics Cards */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {userRole === 'admin' && (

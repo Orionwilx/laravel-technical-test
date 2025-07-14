@@ -1,5 +1,5 @@
 import ShipmentDetails from '@/components/shipments/ShipmentDetails';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import SimpleLayout from '@/layouts/SimpleLayout';
 import { PageProps, Shipment } from '@/types';
 import { Head } from '@inertiajs/react';
 
@@ -13,18 +13,20 @@ export default function ShipmentsShow({ auth, shipment }: ShipmentsShowProps) {
     const isOwner = shipment.user_id === user.id;
 
     return (
-        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Envío: {shipment.product_name}</h2>}>
-            <Head title={`Envío: ${shipment.product_name}`} />
+        <SimpleLayout>
+            <Head title={`Shipment: ${shipment.product_name}`} />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <ShipmentDetails shipment={shipment} canEdit={isAdmin || isOwner} canMarkAsDelivered={isAdmin} />
-                        </div>
-                    </div>
+            <div className="space-y-6">
+                {/* Header */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <h1 className="text-2xl font-bold text-gray-900">Shipment: {shipment.product_name}</h1>
+                </div>
+
+                {/* Details */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <ShipmentDetails shipment={shipment} canEdit={isAdmin || isOwner} canMarkAsDelivered={isAdmin} />
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </SimpleLayout>
     );
 }

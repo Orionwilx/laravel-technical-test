@@ -6,6 +6,18 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
+import { forwardRef } from 'react';
+
+const TriggerButton = forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof SidebarMenuButton>>(({ className, ...props }, ref) => (
+    <SidebarMenuButton
+        ref={ref}
+        size="lg"
+        className={`text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent hover:bg-sidebar-accent/50 group ${className}`}
+        {...props}
+    />
+));
+
+TriggerButton.displayName = 'TriggerButton';
 
 export function NavUser() {
     const { auth } = usePage<SharedData>().props;
@@ -17,15 +29,16 @@ export function NavUser() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton size="lg" className="group text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent">
+                        <TriggerButton>
                             <UserInfo user={auth.user} />
-                            <ChevronsUpDown className="ml-auto size-4" />
-                        </SidebarMenuButton>
+                            <ChevronsUpDown className="ml-auto size-4 opacity-50" />
+                        </TriggerButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
                         align="end"
-                        side={isMobile ? 'bottom' : state === 'collapsed' ? 'left' : 'bottom'}
+                        side={isMobile ? 'bottom' : state === 'collapsed' ? 'right' : 'bottom'}
+                        sideOffset={4}
                     >
                         <UserMenuContent user={auth.user} />
                     </DropdownMenuContent>

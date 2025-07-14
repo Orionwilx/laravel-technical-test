@@ -11,8 +11,10 @@ interface AuthenticatedLayoutProps {
 export default function AuthenticatedLayout({ children, header, breadcrumbs, ...props }: AuthenticatedLayoutProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} {...props}>
-            {header && <div className="mb-6">{header}</div>}
-            {children}
+            <div className="min-h-screen">
+                {header && <div className="mb-6">{header}</div>}
+                <div className="flex-1">{children}</div>
+            </div>
         </AppLayout>
     );
 }

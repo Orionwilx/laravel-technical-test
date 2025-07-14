@@ -1,5 +1,5 @@
 import ShipmentForm from '@/components/shipments/ShipmentForm';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import SimpleLayout from '@/layouts/SimpleLayout';
 import { PageProps, Shipment } from '@/types';
 import { Head } from '@inertiajs/react';
 
@@ -9,18 +9,20 @@ interface ShipmentsEditProps extends PageProps {
 
 export default function ShipmentsEdit({ shipment }: ShipmentsEditProps) {
     return (
-        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Editar Envío: {shipment.product_name}</h2>}>
-            <Head title={`Editar: ${shipment.product_name}`} />
+        <SimpleLayout>
+            <Head title={`Edit: ${shipment.product_name}`} />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <ShipmentForm shipment={shipment} isEdit={true} />
-                        </div>
-                    </div>
+            <div className="space-y-6">
+                {/* Header */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <h1 className="text-2xl font-bold text-gray-900">Edit Shipment: {shipment.product_name}</h1>
+                </div>
+
+                {/* Form */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <ShipmentForm shipment={shipment} isEdit={true} />
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </SimpleLayout>
     );
 }

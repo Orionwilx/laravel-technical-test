@@ -1,21 +1,23 @@
 import ShipmentForm from '@/components/shipments/ShipmentForm';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import SimpleLayout from '@/layouts/SimpleLayout';
 import { Head } from '@inertiajs/react';
 
 export default function ShipmentsCreate() {
     return (
-        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Nuevo Envío</h2>}>
-            <Head title="Nuevo Envío" />
+        <SimpleLayout>
+            <Head title="Create Shipment" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <ShipmentForm />
-                        </div>
-                    </div>
+            <div className="space-y-6">
+                {/* Header */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <h1 className="text-2xl font-bold text-gray-900">Create New Shipment</h1>
+                </div>
+
+                {/* Form */}
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <ShipmentForm />
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </SimpleLayout>
     );
 }
