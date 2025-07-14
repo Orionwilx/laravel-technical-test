@@ -20,6 +20,9 @@ export default function ShipmentsList({
     canDelete = false,
     showUserInfo = false,
 }: ShipmentsListProps) {
+    // Ensure shipments is an array
+    const shipmentsArray = Array.isArray(shipments) ? shipments : [];
+
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'announced':
@@ -55,7 +58,7 @@ export default function ShipmentsList({
                 )}
             </div>
 
-            {shipments.length === 0 ? (
+            {shipmentsArray.length === 0 ? (
                 <Card>
                     <CardContent className="py-8">
                         <div className="text-center">
@@ -73,7 +76,7 @@ export default function ShipmentsList({
                 </Card>
             ) : (
                 <div className="grid gap-4">
-                    {shipments.map((shipment) => (
+                    {shipmentsArray.map((shipment) => (
                         <Card key={shipment.id} className="transition-shadow hover:shadow-md">
                             <CardHeader>
                                 <div className="flex items-start justify-between">

@@ -4,11 +4,22 @@ import { PageProps, Shipment } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 
-interface ShipmentsIndexProps extends PageProps {
-    shipments: Shipment[];
+interface PaginatedShipments {
+    data: Shipment[];
+    current_page: number;
+    last_page: number;
+    total: number;
+    per_page: number;
+    from: number;
+    to: number;
 }
 
-export default function ShipmentsIndex({ auth, shipments }: ShipmentsIndexProps) {
+interface ShipmentsIndexProps extends PageProps {
+    shipments: PaginatedShipments;
+    canViewAll: boolean;
+}
+
+export default function ShipmentsIndex({ auth, shipments, canViewAll }: ShipmentsIndexProps) {
     const user = auth.user;
     const isAdmin = user.role === 'admin';
 
@@ -34,13 +45,27 @@ export default function ShipmentsIndex({ auth, shipments }: ShipmentsIndexProps)
                 {/* Shipments List */}
                 <div className="rounded-lg bg-white p-6 shadow">
                     <ShipmentsList
-                        shipments={shipments}
+                        shipments={shipments?.data || []}
                         canCreate={true}
                         canEdit={isAdmin || user.role === 'external'}
                         canDelete={isAdmin}
                         showUserInfo={isAdmin}
                     />
                 </div>
+
+                {/* Pagination */}
+                {shipments && shipments.last_page > 1 && (
+                    <div className="rounded-lg bg-white p-4 shadow">
+                        <div className="flex items-center justify-between">
+                            <div className="text-sm text-gray-700">
+                                Showing {shipments?.from || 0} to {shipments?.to || 0} of {shipments?.total || 0} shipments
+                            </div>
+                            <div className="text-sm text-gray-700">
+                                Page {shipments?.current_page || 1} of {shipments?.last_page || 1}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </SimpleLayout>
     );

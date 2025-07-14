@@ -31,7 +31,7 @@ class ShipmentController extends Controller
                 ->paginate(10);
         }
 
-        return Inertia::render('Shipments/Index', [
+        return Inertia::render('shipments/Index', [
             'shipments' => $shipments,
             'canViewAll' => $user->isAdmin()
         ]);
@@ -42,7 +42,7 @@ class ShipmentController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Shipments/Create');
+        return Inertia::render('shipments/Create');
     }
 
     /**
@@ -74,7 +74,7 @@ class ShipmentController extends Controller
             abort(403, 'No tienes permisos para ver este envío.');
         }
 
-        return Inertia::render('Shipments/Show', [
+        return Inertia::render('shipments/Show', [
             'shipment' => $shipment->load('user')
         ]);
     }
@@ -92,7 +92,7 @@ class ShipmentController extends Controller
             abort(403, 'No tienes permisos para editar este envío.');
         }
 
-        return Inertia::render('Shipments/Edit', [
+        return Inertia::render('shipments/Edit', [
             'shipment' => $shipment
         ]);
     }
