@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,9 @@ class StoreExternalUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check() && Auth::user()->isAdmin();
+        /** @var User $user */
+        $user = Auth::user();
+        return $user && $user->isAdmin();
     }
 
     /**
@@ -22,9 +25,11 @@ class StoreExternalUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('externalUser')?->id;
+
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:external_users,email',
+            'email' => 'required|email|unique:users,email' . ($userId ? ',' . $userId : ''),
             'company_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'status' => 'required|in:active,inactive',

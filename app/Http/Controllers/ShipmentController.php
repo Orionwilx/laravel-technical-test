@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreShipmentRequest;
 use App\Models\Shipment;
-use App\Models\ExternalUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -16,6 +16,7 @@ class ShipmentController extends Controller
      */
     public function index()
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->isAdmin()) {
@@ -65,7 +66,10 @@ class ShipmentController extends Controller
      */
     public function show(Shipment $shipment)
     {
-        $user = auth()->user();        // Verificar que el usuario puede ver este envío
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Verificar que el usuario puede ver este envío
         if (!$user->isAdmin() && $shipment->user_id !== $user->id) {
             abort(403, 'No tienes permisos para ver este envío.');
         }
@@ -80,6 +84,7 @@ class ShipmentController extends Controller
      */
     public function edit(Shipment $shipment)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         // Verificar que el usuario puede editar este envío
@@ -97,6 +102,7 @@ class ShipmentController extends Controller
      */
     public function update(StoreShipmentRequest $request, Shipment $shipment)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         // Verificar que el usuario puede actualizar este envío
@@ -115,6 +121,7 @@ class ShipmentController extends Controller
      */
     public function destroy(Shipment $shipment)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         // Verificar que el usuario puede eliminar este envío

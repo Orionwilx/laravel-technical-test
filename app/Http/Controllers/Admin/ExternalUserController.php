@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExternalUserRequest;
-use App\Models\ExternalUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,7 +15,7 @@ class ExternalUserController extends Controller
      */
     public function index()
     {
-        $users = ExternalUser::orderBy('created_at', 'desc')->paginate(10);
+        $users = User::where('role', 'external')->orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('Admin/ExternalUsers/Index', [
             'users' => $users
@@ -37,8 +37,9 @@ class ExternalUserController extends Controller
     {
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
+        $validated['role'] = 'external'; // Asegurar que el rol sea externo
 
-        ExternalUser::create($validated);
+        User::create($validated);
 
         return redirect()->route('admin.external-users.index')
             ->with('success', 'Usuario externo creado exitosamente.');
@@ -47,7 +48,7 @@ class ExternalUserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ExternalUser $externalUser)
+    public function show(User $externalUser)
     {
         return Inertia::render('Admin/ExternalUsers/Show', [
             'user' => $externalUser->load('shipments')
@@ -57,7 +58,7 @@ class ExternalUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExternalUser $externalUser)
+    public function edit(User $externalUser)
     {
         return Inertia::render('Admin/ExternalUsers/Edit', [
             'user' => $externalUser
@@ -66,8 +67,10 @@ class ExternalUserController extends Controller
 
     /**
      * Update the specified resource in storage.
+    /**
+     * Update the specified resource in storage.
      */
-    public function update(StoreExternalUserRequest $request, ExternalUser $externalUser)
+    public function update(StoreExternalUserRequest $request, User $externalUser)
     {
         $validated = $request->validated();
 
@@ -86,7 +89,7 @@ class ExternalUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExternalUser $externalUser)
+    public function destroy(User $externalUser)
     {
         $externalUser->delete();
 
