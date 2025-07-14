@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { LayoutGrid, LogOut, Package, Settings, Users } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,23 +28,7 @@ export function SimpleNavbar() {
     ];
 
     const handleLogout = () => {
-        // Simple form submission for logout
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/logout';
-
-        // Add CSRF token
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        if (csrfToken) {
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = csrfToken;
-            form.appendChild(csrfInput);
-        }
-
-        document.body.appendChild(form);
-        form.submit();
+        router.post('/logout');
     };
 
     return (
