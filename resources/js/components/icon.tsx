@@ -3,7 +3,7 @@ import { type LucideProps } from 'lucide-react';
 import { type ComponentType } from 'react';
 
 interface IconProps extends Omit<LucideProps, 'ref'> {
-    iconNode: ComponentType<LucideProps>;
+    iconNode: ComponentType<any>; // Más flexible para compatibilidad
 }
 
 export function Icon({ iconNode: IconComponent, className, ...props }: IconProps) {

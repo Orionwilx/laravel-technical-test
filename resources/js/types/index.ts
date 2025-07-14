@@ -66,7 +66,7 @@ export type PageProps<T = Record<string, unknown>> = SharedData & T;
 export interface NavItem {
     title: string;
     href: string;
-    icon?: React.ComponentType<any>; // Use any for Lucide icon components
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>; // Tipo para iconos Lucide
     label?: string;
     url?: string;
     active?: boolean;
@@ -94,6 +94,7 @@ export interface ShipmentFormData {
     truck_plate: string;
     product_name: string;
     notes?: string;
+    [key: string]: string | undefined; // Index signature más específica
 }
 
 export interface ExternalUserFormData {

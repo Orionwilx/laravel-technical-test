@@ -25,10 +25,16 @@ Route::get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    return Inertia::render('Dashboard', [
-        'user' => $user,
-        'recentShipments' => $user->shipments()->latest()->limit(5)->get()
-    ]);
+    // Estadísticas para usuario externo
+    $stats = [
+        'totalExternalUsers' => 0, // Solo admins ven esto
+        'totalShipments' => $user->shipments()->count(),
+        'recentShipments' => $user->shipments()->with('user')->latest()->limit(5)->get(),
+        'announcedShipments' => $user->shipments()->where('status', 'announced')->count(),
+        'deliveredShipments' => $user->shipments()->where('status', 'delivered')->count(),
+    ];
+
+    return Inertia::render('dashboard', compact('stats'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -57,7 +63,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
             'deliveredShipments' => \App\Models\Shipment::where('status', 'delivered')->count(),
         ];
 
-        return Inertia::render('Admin/Dashboard', compact('stats'));
+        return Inertia::render('dashboard', compact('stats'));
     })->name('dashboard');
 });
 
