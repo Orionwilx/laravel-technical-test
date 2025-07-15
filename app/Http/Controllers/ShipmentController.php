@@ -182,4 +182,33 @@ class ShipmentController extends Controller
             'Pragma' => 'public',
         ]);
     }
+
+    /**
+     * Mark a shipment as delivered
+     */
+    public function markAsDelivered(Shipment $shipment)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Solo los administradores pueden marcar como entregado
+        if (!$user->isAdmin()) {
+            abort(403, 'No tienes permisos para marcar envíos como entregados.');
+        }
+
+        // Verificar que el envío no esté ya entregado
+        if ($shipment->status === 'delivered') {
+            return redirect()->route('shipments.index')
+                ->with('error', 'Este envío ya está marcado como entregado.');
+        }
+
+        // Actualizar el estado y fecha de entrega
+        $shipment->update([
+            'status' => 'delivered',
+            'delivered_at' => now()
+        ]);
+
+        return redirect()->route('shipments.index')
+            ->with('success', 'Envío marcado como entregado exitosamente.');
+    }
 }

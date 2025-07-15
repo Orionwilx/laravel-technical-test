@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shipment } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Calendar, CheckCircle, Edit, FileText, Package, Truck, User } from 'lucide-react';
 
 interface ShipmentDetailsProps {
@@ -42,9 +42,20 @@ export default function ShipmentDetails({ shipment, canEdit = false, canMarkAsDe
     };
 
     const handleMarkAsDelivered = () => {
-        if (confirm('¿Está seguro de marcar este envío como entregado?')) {
-            // TODO: Implement mark as delivered functionality
-            console.log('Marking as delivered:', shipment.id);
+        if (confirm('¿Está seguro de marcar este envío como entregado? Esta acción cambiará el estado del envío y registrará la fecha de entrega.')) {
+            router.patch(
+                `/shipments/${shipment.id}/mark-delivered`,
+                {},
+                {
+                    onSuccess: () => {
+                        // La página se recargará automáticamente después del éxito
+                    },
+                    onError: (errors) => {
+                        console.error('Error al marcar como entregado:', errors);
+                        alert('Error al marcar el envío como entregado. Por favor, inténtelo de nuevo.');
+                    },
+                },
+            );
         }
     };
 
@@ -70,9 +81,15 @@ export default function ShipmentDetails({ shipment, canEdit = false, canMarkAsDe
                         </Button>
                     )}
                     {canMarkAsDelivered && shipment.status === 'announced' && (
-                        <Button onClick={handleMarkAsDelivered} className="bg-green-600 hover:bg-green-700">
+                        <Button onClick={handleMarkAsDelivered} className="bg-green-600 text-white hover:bg-green-700">
                             <CheckCircle className="mr-2 h-4 w-4" />
                             Marcar como Entregado
+                        </Button>
+                    )}
+                    {canMarkAsDelivered && shipment.status === 'delivered' && (
+                        <Button disabled className="cursor-not-allowed bg-gray-400">
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Ya Entregado
                         </Button>
                     )}
                 </div>
