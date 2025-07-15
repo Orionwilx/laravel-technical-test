@@ -17,7 +17,7 @@ class ExternalUserController extends Controller
     {
         $users = User::where('role', 'external')->orderBy('created_at', 'desc')->paginate(10);
 
-        return Inertia::render('Admin/ExternalUsers/Index', [
+        return Inertia::render('admin/ExternalUsers/Index', [
             'users' => $users
         ]);
     }
@@ -27,7 +27,7 @@ class ExternalUserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/ExternalUsers/Create');
+        return Inertia::render('admin/ExternalUsers/Create');
     }
 
     /**
@@ -50,7 +50,7 @@ class ExternalUserController extends Controller
      */
     public function show(User $externalUser)
     {
-        return Inertia::render('Admin/ExternalUsers/Show', [
+        return Inertia::render('admin/ExternalUsers/Show', [
             'user' => $externalUser->load('shipments')
         ]);
     }
@@ -60,7 +60,7 @@ class ExternalUserController extends Controller
      */
     public function edit(User $externalUser)
     {
-        return Inertia::render('Admin/ExternalUsers/Edit', [
+        return Inertia::render('admin/ExternalUsers/Edit', [
             'user' => $externalUser
         ]);
     }

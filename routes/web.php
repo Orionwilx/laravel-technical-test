@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ExternalUserController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShipmentController;
 use Illuminate\Foundation\Application;
@@ -53,6 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Gestión de usuarios externos
     Route::resource('external-users', ExternalUserController::class);
+
+    // Gestión de usuarios administradores
+    Route::resource('users', UserController::class);
 
     // Dashboard de administrador con estadísticas
     Route::get('/dashboard', function () {

@@ -24,7 +24,12 @@ export function SimpleNavbar() {
     const navItems: NavItem[] = [
         { title: 'Dashboard', href: '/dashboard', icon: LayoutGrid },
         { title: 'Shipments', href: '/shipments', icon: Package },
-        ...(isAdmin ? [{ title: 'Users', href: '/admin/external-users', icon: Users }] : []),
+        ...(isAdmin
+            ? [
+                  { title: 'External Users', href: '/admin/external-users', icon: Users },
+                  { title: 'Admin Users', href: '/admin/users', icon: Users },
+              ]
+            : []),
     ];
 
     const handleLogout = () => {

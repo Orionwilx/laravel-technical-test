@@ -6,6 +6,9 @@ export interface User {
     email_verified_at?: string;
     role: 'admin' | 'external';
     avatar?: string;
+    company_name?: string;
+    phone?: string;
+    status: 'active' | 'inactive';
     created_at: string;
     updated_at: string;
 }

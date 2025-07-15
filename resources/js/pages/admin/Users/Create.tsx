@@ -2,36 +2,30 @@ import SimpleLayout from '@/layouts/SimpleLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function ExternalUsersCreate() {
+export default function UsersCreate() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role: 'external',
-        company_name: '',
-        phone: '',
         status: 'active',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post('/admin/external-users');
+        post('/admin/users');
     };
 
     return (
         <SimpleLayout>
-            <Head title="Create External User" />
+            <Head title="Create Admin User" />
 
             <div className="space-y-6">
                 {/* Header */}
                 <div className="rounded-lg bg-white p-6 shadow">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-2xl font-bold text-gray-900">Create External User</h1>
-                        <Link
-                            href="/admin/external-users"
-                            className="inline-flex items-center rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
-                        >
+                        <h1 className="text-2xl font-bold text-gray-900">Create Admin User</h1>
+                        <Link href="/admin/users" className="inline-flex items-center rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700">
                             Back to Users
                         </Link>
                     </div>
@@ -101,34 +95,6 @@ export default function ExternalUsersCreate() {
                         </div>
 
                         <div>
-                            <label htmlFor="company_name" className="block text-sm font-medium text-gray-700">
-                                Company Name
-                            </label>
-                            <input
-                                id="company_name"
-                                type="text"
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                                value={data.company_name}
-                                onChange={(e) => setData('company_name', e.target.value)}
-                            />
-                            {errors.company_name && <div className="mt-2 text-sm text-red-600">{errors.company_name}</div>}
-                        </div>
-
-                        <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                Phone
-                            </label>
-                            <input
-                                id="phone"
-                                type="text"
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                                value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
-                            />
-                            {errors.phone && <div className="mt-2 text-sm text-red-600">{errors.phone}</div>}
-                        </div>
-
-                        <div>
                             <label htmlFor="status" className="block text-sm font-medium text-gray-700">
                                 Status
                             </label>
@@ -144,25 +110,9 @@ export default function ExternalUsersCreate() {
                             {errors.status && <div className="mt-2 text-sm text-red-600">{errors.status}</div>}
                         </div>
 
-                        <div>
-                            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                                Role
-                            </label>
-                            <select
-                                id="role"
-                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                                value={data.role}
-                                onChange={(e) => setData('role', e.target.value)}
-                            >
-                                <option value="external">External</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                            {errors.role && <div className="mt-2 text-sm text-red-600">{errors.role}</div>}
-                        </div>
-
                         <div className="flex items-center justify-end space-x-4">
                             <Link
-                                href="/admin/external-users"
+                                href="/admin/users"
                                 className="inline-flex items-center rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
                             >
                                 Cancel

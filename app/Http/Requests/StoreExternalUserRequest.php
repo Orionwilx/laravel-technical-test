@@ -25,7 +25,7 @@ class StoreExternalUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('externalUser')?->id;
+        $userId = $this->route('external_user')?->id;
 
         $rules = [
             'name' => 'required|string|max:255',
@@ -41,7 +41,6 @@ class StoreExternalUserRequest extends FormRequest
         } else {
             // Si es actualización, password es opcional
             $rules['password'] = 'nullable|string|min:8|confirmed';
-            $rules['email'] = 'required|email|unique:external_users,email,' . $this->route('external_user');
         }
 
         return $rules;
