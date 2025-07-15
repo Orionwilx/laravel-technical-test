@@ -60,6 +60,7 @@ export default function ShipmentsIndex({ auth, shipments, canViewAll }: Shipment
                         canCreate={true}
                         canEdit={isAdmin || user.role === 'external'}
                         canDelete={isAdmin}
+                        canMarkDelivered={isAdmin}
                         showUserInfo={isAdmin}
                     />
                 </div>

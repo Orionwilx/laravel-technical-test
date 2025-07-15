@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('shipments', ShipmentController::class);
     Route::get('shipments/export/excel', [ShipmentController::class, 'export'])->name('shipments.export');
+    Route::patch('shipments/{shipment}/mark-delivered', [ShipmentController::class, 'markAsDelivered'])->name('shipments.markAsDelivered');
 });
 
 // Rutas para administradores - Solo usuarios con rol admin
