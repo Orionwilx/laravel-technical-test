@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 // Rutas para envíos (Shipments) - Accesibles por usuarios autenticados
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('shipments', ShipmentController::class);
+    Route::get('shipments/export/excel', [ShipmentController::class, 'export'])->name('shipments.export');
 });
 
 // Rutas para administradores - Solo usuarios con rol admin
