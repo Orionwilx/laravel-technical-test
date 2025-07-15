@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreShipmentRequest;
 use App\Models\Shipment;
 use App\Models\User;
+use App\Exports\ShipmentsExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -133,5 +134,47 @@ class ShipmentController extends Controller
 
         return redirect()->route('shipments.index')
             ->with('success', 'Envío eliminado exitosamente.');
+    }
+
+    /**
+     * Export shipments to Excel
+     */
+    public function export()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Solo los administradores pueden exportar
+        if (!$user->isAdmin()) {
+            abort(403, 'No tienes permisos para exportar envíos.');
+        }
+
+        $export = new ShipmentsExport();
+        $data = $export->getData();
+
+        // Generar CSV
+        $filename = 'Envios_' . date('Y-m-d_H-i-s') . '.csv';
+
+        // Generar CSV correctamente formateado
+        $output = fopen('php://temp', 'w');
+
+        // Agregar BOM para UTF-8
+        fwrite($output, "\xEF\xBB\xBF");
+
+        // Escribir cada fila usando fputcsv para formato correcto
+        foreach ($data as $row) {
+            fputcsv($output, $row, ',', '"'); // Usar coma como separador y comillas
+        }
+
+        rewind($output);
+        $csvContent = stream_get_contents($output);
+        fclose($output);
+
+        return response($csvContent, 200, [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Pragma' => 'public',
+        ]);
     }
 }
