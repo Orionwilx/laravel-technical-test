@@ -6,6 +6,7 @@ use App\Http\Requests\StoreShipmentRequest;
 use App\Models\Shipment;
 use App\Models\User;
 use App\Exports\ShipmentsExport;
+use App\Jobs\SendShipmentAnnouncedEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -56,7 +57,11 @@ class ShipmentController extends Controller
 
         $shipment = Shipment::create($validated);
 
-        // Aquí enviaríamos el correo electrónico (implementaremos después)
+        // Enviar correo electrónico a través de una cola
+        // Obtener el email del administrador para notificar
+        $adminEmail = User::where('role', 'admin')->first()?->email ?? config('mail.from.address');
+
+        SendShipmentAnnouncedEmail::dispatch($shipment, $adminEmail);
 
         return redirect()->route('shipments.index')
             ->with('success', 'Envío anunciado exitosamente.');
