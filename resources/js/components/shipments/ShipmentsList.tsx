@@ -2,14 +2,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shipment } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Edit, Eye, Plus, Trash2 } from 'lucide-react';
+import { Link, router } from '@inertiajs/react';
+import { CheckCircle, Edit, Eye, Plus, Trash2 } from 'lucide-react';
 
 interface ShipmentsListProps {
     shipments: Shipment[];
     canCreate?: boolean;
     canEdit?: boolean;
     canDelete?: boolean;
+    canMarkDelivered?: boolean;
     showUserInfo?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function ShipmentsList({
     canCreate = false,
     canEdit = false,
     canDelete = false,
+    canMarkDelivered = false,
     showUserInfo = false,
 }: ShipmentsListProps) {
     // Ensure shipments is an array
@@ -42,6 +44,38 @@ export default function ShipmentsList({
             hour: '2-digit',
             minute: '2-digit',
         });
+    };
+
+    const handleDelete = (shipmentId: number) => {
+        if (confirm('¿Está seguro de eliminar este envío? Esta acción no se puede deshacer.')) {
+            router.delete(`/shipments/${shipmentId}`, {
+                onSuccess: () => {
+                    // La página se recargará automáticamente después de la eliminación exitosa
+                },
+                onError: (errors) => {
+                    console.error('Error al eliminar el envío:', errors);
+                    alert('Error al eliminar el envío. Por favor, inténtelo de nuevo.');
+                },
+            });
+        }
+    };
+
+    const handleMarkAsDelivered = (shipmentId: number) => {
+        if (confirm('¿Está seguro de marcar este envío como entregado?')) {
+            router.patch(
+                `/shipments/${shipmentId}/mark-delivered`,
+                {},
+                {
+                    onSuccess: () => {
+                        // La página se recargará automáticamente después del éxito
+                    },
+                    onError: (errors) => {
+                        console.error('Error al marcar como entregado:', errors);
+                        alert('Error al marcar el envío como entregado. Por favor, inténtelo de nuevo.');
+                    },
+                },
+            );
+        }
     };
 
     return (
@@ -101,16 +135,18 @@ export default function ShipmentsList({
                                                     </Link>
                                                 </Button>
                                             )}
-                                            {canDelete && (
+                                            {canMarkDelivered && shipment.status !== 'delivered' && (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => {
-                                                        if (confirm('¿Está seguro de eliminar este envío?')) {
-                                                            // TODO: Implement delete functionality
-                                                        }
-                                                    }}
+                                                    onClick={() => handleMarkAsDelivered(shipment.id)}
+                                                    className="text-green-600 hover:bg-green-50 hover:text-green-700"
                                                 >
+                                                    <CheckCircle className="h-4 w-4" />
+                                                </Button>
+                                            )}
+                                            {canDelete && (
+                                                <Button variant="outline" size="sm" onClick={() => handleDelete(shipment.id)}>
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             )}
